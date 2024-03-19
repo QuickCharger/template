@@ -62,4 +62,19 @@ app.use(function (err, req, res, next) {
   res.send({ result: -1, message: "error" })
 })
 
+
+setTimeout(async () => {
+  let redis = require('redis')
+
+  const client = await redis.createClient({ url: 'redis://127.0.0.1:6379' })
+    .on('error', err => console.log('Redis Client Error', err))
+    .connect()
+
+  let k = 'abc'
+  await client.set(k, '123321')
+  const value = await client.get(k)
+  console.log(value)
+  await client.disconnect()
+}, 1000)
+
 module.exports = app
