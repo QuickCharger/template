@@ -70,11 +70,48 @@ setTimeout(async () => {
     .on('error', err => console.log('Redis Client Error', err))
     .connect()
 
-  let k = 'abc'
-  await client.set(k, '123321')
-  const value = await client.get(k)
-  console.log(value)
+  let writeTimes = 1000 * 10
+  let t = 0
+
+  t = new Date()
+  for (let i = 0; i < writeTimes; ++i) {
+    await client.set(`${i}`, 1)
+  }
+  console.log(`write ${writeTimes} times. cost ${new Date() - t} ms`)
+
+  t = new Date()
+  for (let i = 0; i < writeTimes; ++i) {
+    await client.get(`i`)
+  }
+  console.log(`read ${writeTimes} times.  cost ${new Date() - t} ms`)
+
   await client.disconnect()
+
+
+  let tAdmin = require('./orm/Administrator')
+  await tAdmin.sync({ force: false })
+
+  t = new Date()
+  for (let i = 1; i < writeTimes; ++i) {
+    await tAdmin.create({ Id: i, RecordState: i })
+  }
+  console.log(`write ${writeTimes} times. cost ${new Date() - t} ms`)
+
+  t = new Date()
+  for (let i = 0; i < writeTimes; ++i) {
+    await tAdmin.findOne({ where: { Id: i } })
+  }
+  console.log(`read ${writeTimes} times.  cost ${new Date() - t} ms`)
+
+
+  /**
+   * 虚拟机 ubuntu 18.04 4C1G  mysql8 docker+redis7
+write 10000 times. cost 2377 ms
+read 10000 times.  cost 2163 ms
+write 10000 times. cost 171633 ms
+read 10000 times.  cost 6497 ms
+   */
+
 }, 1000)
 
 module.exports = app
