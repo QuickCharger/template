@@ -88,6 +88,20 @@ setTimeout(async () => {
   await client.disconnect()
 
 
+  let obj = {}
+  t = new Date()
+  for (let i = 0; i < writeTimes; ++i) {
+    obj[`${i}`] = i
+  }
+  console.log(`write ${writeTimes} times. cost ${new Date() - t} ms`)
+
+  t = new Date()
+  for (let i = 0; i < writeTimes; ++i) {
+    let c = obj[`${i}`]
+  }
+  console.log(`read ${writeTimes} times.  cost ${new Date() - t} ms`)
+
+
   let tAdmin = require('./orm/Administrator')
   await tAdmin.sync({ force: false })
 
@@ -107,9 +121,11 @@ setTimeout(async () => {
   /**
    * 虚拟机 ubuntu 18.04 4C1G  mysql8 docker+redis7
 write 10000 times. cost 2377 ms
-read 10000 times.  cost 2163 ms
+read  10000 times. cost 2163 ms
+write 10000 times. cost 1 ms
+read  10000 times. cost 1 ms
 write 10000 times. cost 171633 ms
-read 10000 times.  cost 6497 ms
+read  10000 times. cost 6497 ms
    */
 
 }, 1000)
