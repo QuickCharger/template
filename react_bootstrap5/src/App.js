@@ -26,7 +26,7 @@ export default function App () {
         minBreakpoint="xs"
       >
         <Routes />
-      </ThemeProvider>;
+      </ThemeProvider>
     </BrowserRouter >
   )
 }
