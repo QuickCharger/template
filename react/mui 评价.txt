@@ -1,0 +1,4 @@
+css写起来非常复杂  
+1. 样式与属性混合 比如 fullWidth color size margin 可以作为属性 也可以在sx中设置。非常混乱
+2. 并不是所有控件都支持1中的属性  比如 margin TextField支持 Button不支持。非常混乱
+3. 很多控件集成了自己的独特属性导致设置样式时不确定是使用控件的独特样式 还是属性样式 还是写在sx中 比如 TextField 支持 margin="normal" 狗屎啊
